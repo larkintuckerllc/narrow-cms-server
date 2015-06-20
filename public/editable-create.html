@@ -1,0 +1,24 @@
+<div class="container" style="height: 100%;" layout="column">
+  <md-button class="md-fab fab-bottom-right" aria-label="add" ng-show="editable.$valid" ng-click="vm.save()">
+    <md-icon md-font-set="material-icons">add</md-icon>
+  </md-button>
+  <md-toolbar class="md-whiteframe-z1">
+    <div class="md-toolbar-tools">
+      <md-button class="md-icon-button" ng-click="vm.back()">
+        <md-icon md-font-set="material-icons">navigate_before</md-icon>
+      </md-button>
+      <h2>Narrow CMS Admin</h2>
+      <span flex></span>
+      <md-button ng-click="vm.logout()">logout</md-button>
+    </div>
+  </md-toolbar>
+  <div class="md-padding" flex>
+    <form name="editable" novalidate>
+      <md-input-container>
+        <label>name</label>
+          <input ng-model="vm.editable.name" required/>
+      </md-input-container>
+      <div nc-editable editable="true" value="vm.editable.content"></div>
+    </form>
+  </div>
+</div>
