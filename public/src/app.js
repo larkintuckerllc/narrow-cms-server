@@ -4,6 +4,7 @@
   .module('app', ['ngRoute', 'ngMaterial', 'ncModule'])
   .config(routeConfig)
   .config(mdConfig)
+  .config(ncConfig)
   .run(routeRun);
   /**
   * @name routeConfig
@@ -87,6 +88,15 @@
     .accentPalette('orange')
     .warnPalette('red')
     .backgroundPalette('grey');
+  }
+  /*
+  * @name ncConfig
+  * @desc configures narrow cms client
+  * @param {Object}
+  */
+  ncConfig.$inject = ['ncConfigServiceProvider'];
+  function ncConfig(ncConfigServiceProvider) {
+    ncConfigServiceProvider.setApiRootURI('');
   }
   /**
   * @name routeRun
