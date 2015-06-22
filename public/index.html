@@ -17,15 +17,35 @@
   <script src="bower_components/angular-aria/angular-aria.js"></script>
   <script src="bower_components/angular-material/angular-material.js"></script>
   <script src="bower_components/narrow-cms-client/dist/narrow-cms-client.min.js"></script>
+<!-- PRODUCTION -->
   <script src="js/app.min.js"></script>
+<!-- END PRODUCTION -->
+<!-- DEVELOPMENT -->
 <!--
   <script src="src/app.js"></script>
+  <script src="src/user.service.js"></script>
   <script src="src/error.controller.js"></script>
   <script src="src/login.controller.js"></script>
   <script src="src/home.controller.js"></script>
   <script src="src/editable.controller.js"></script>
   <script src="src/editable-create.controller.js"></script>
+  <script src="src/user.controller.js"></script>
+  <script src="src/user-create.controller.js"></script>
 -->
+<!-- END DEVELOPMENT -->
+  <script type="text/ng-template" id="error.html">
+    <div class="container" style="height: 100%;" layout="column">
+      <md-toolbar class="md-whiteframe-z1">
+        <div class="md-toolbar-tools">
+          <h2>Narrow CMS Admin</h2>
+        </div>
+      </md-toolbar>
+      <div flex layout="column" layout-align="center center">
+        <p>An unexpected error occurred.</p>
+        <md-button class="md-raised" ng-click="vm.reload()">reload</md-button>
+      </div>
+    </div>
+  </script>
 </head>
 <body ng-app="app">
   <ng-view></ng-view>

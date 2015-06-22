@@ -53,23 +53,40 @@ function getRouter() {
   router.use(passport.initialize());
   var editablesController = require('./editables.controller');
   var usersController = require('./users.controller');
+  // EDITABLES
   router.get('/editables/:_id', editablesController.findById);
   router.get('/editables/',
-  passport.authenticate('bearer', {session: false}),
-  editablesController.findAll);
+    passport.authenticate('bearer', {session: false}),
+    editablesController.findAll);
   router.post('/editables/',
-  passport.authenticate('bearer', {session: false}),
-  editablesController.add);
+    passport.authenticate('bearer', {session: false}),
+    editablesController.add);
   router.put('/editables/:_id',
-  passport.authenticate('bearer', {session: false}),
-  editablesController.update);
+    passport.authenticate('bearer', {session: false}),
+    editablesController.update);
   router.delete('/editables/:_id',
-  passport.authenticate('bearer', {session: false}),
-  editablesController.remove);
-  router.post('/users/', usersController.add);
+    passport.authenticate('bearer', {session: false}),
+    editablesController.remove);
+  // USERS
+  router.get('/users/:_id',
+    passport.authenticate('bearer', {session: false}),
+    usersController.findById);
+  router.get('/users/',
+    passport.authenticate('bearer', {session: false}),
+    usersController.findAll);
+  router.post('/users/',
+    passport.authenticate('bearer', {session: false}),
+    usersController.add);
+  router.put('/users/:_id',
+    passport.authenticate('bearer', {session: false}),
+    usersController.update);
+  router.delete('/users/:_id',
+    passport.authenticate('bearer', {session: false}),
+    usersController.remove);
+  // LOGIN
   router.post('/login/',
-  passport.authenticate('local', {session: false}),
-  sendToken);
+    passport.authenticate('local', {session: false}),
+    sendToken);
   return router;
   /**
   * @name localStrategyVerify

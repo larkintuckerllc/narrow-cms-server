@@ -30,7 +30,7 @@
     * @desc back
     */
     function back() {
-      $location.url('/');
+      $location.url('/?tab=editable');
     }
     /**
     * @name save
@@ -43,7 +43,7 @@
       * @desc success
       */
       function success() {
-        $location.url('/');
+        $location.url('/?tab=editable');
       }
       /**
       * @name error

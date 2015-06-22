@@ -2,21 +2,21 @@
   'use strict';
   angular
   .module('app')
-  .controller('EditableController', Controller);
+  .controller('UserCreateController', Controller);
   /**
   * @name Controller
   * @desc controller
   * @param {Object} $location $location
   * @param {Object} ncAuthService ncAuthService
   */
-  Controller.$inject = ['$window', '$location', 'resolve', 'ncAuthService'];
-  function Controller($window, $location, resolve, ncAuthService) {
+  Controller.$inject = ['$window', '$location', 'ncAuthService',
+    'userService'];
+  function Controller($window, $location, ncAuthService, userService) {
     var vm = this;
     vm.logout = logout;
     vm.back = back;
-    vm.editable = resolve[1];
+    vm.user = new userService({username: '', password: ''});
     vm.save = save;
-    vm.remove = remove;
     /**
     * @name logout
     * @desc logout
@@ -30,41 +30,20 @@
     * @desc back
     */
     function back() {
-      $location.url('/?tab=editable');
+      $location.url('/?tab=users');
     }
     /**
     * @name save
     * @desc save
     */
     function save() {
-      vm.editable.$update().then(success).catch(error);
+      vm.user.$save().then(success).catch(error);
       /**
       * @name success
       * @desc success
       */
       function success() {
-        $location.url('/?tab=editable');
-      }
-      /**
-      * @name error
-      * @desc error
-      */
-      function error() {
-        $location.url('/error');
-      }
-    }
-    /**
-    * @name remove
-    * @desc remove
-    */
-    function remove() {
-      vm.editable.$delete().then(success).catch(error);
-      /**
-      * @name success
-      * @desc success
-      */
-      function success() {
-        $location.url('/?tab=editable');
+        $location.url('/?tab=users');
       }
       /**
       * @name error

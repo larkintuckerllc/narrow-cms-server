@@ -7,10 +7,10 @@
     </div>
   </md-toolbar>
   <div flex>
-    <md-button class="md-fab fab-bottom-right" aria-label="add" ng-click="vm.createEditable()">
+    <md-button class="md-fab fab-bottom-right" aria-label="add" ng-click="vm.create()">
       <md-icon md-font-set="material-icons">add</md-icon>
     </md-button>
-    <md-tabs md-border-bottom>
+    <md-tabs md-border-bottom md-selected="vm.tabSelected">
       <md-tab label="editables">
         <md-content>
           <md-list>
@@ -27,11 +27,11 @@
       <md-tab label="users">
         <md-content>
           <md-list>
-            <md-list-item class="md-2-line">
+            <md-list-item ng-repeat="user in vm.users" ng-click="vm.editUser(user)">
               <div class="md-list-item-text">
-                <h3>Title</h3>
-                <p>ID</p>
+                <p>{{ user.username }}</p>
               </div>
+              <md-divider ng-if="! $last"></md-divider>
             </md-list-item>
           </md-list>
         </md-content>

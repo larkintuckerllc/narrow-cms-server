@@ -2,7 +2,7 @@
   'use strict';
   angular
   .module('app')
-  .controller('EditableController', Controller);
+  .controller('UserController', Controller);
   /**
   * @name Controller
   * @desc controller
@@ -14,7 +14,8 @@
     var vm = this;
     vm.logout = logout;
     vm.back = back;
-    vm.editable = resolve[1];
+    vm.user = resolve[1];
+    vm.user.password = '';
     vm.save = save;
     vm.remove = remove;
     /**
@@ -30,20 +31,20 @@
     * @desc back
     */
     function back() {
-      $location.url('/?tab=editable');
+      $location.url('/?tab=users');
     }
     /**
     * @name save
     * @desc save
     */
     function save() {
-      vm.editable.$update().then(success).catch(error);
+      vm.user.$update().then(success).catch(error);
       /**
       * @name success
       * @desc success
       */
       function success() {
-        $location.url('/?tab=editable');
+        $location.url('/?tab=users');
       }
       /**
       * @name error
@@ -58,13 +59,13 @@
     * @desc remove
     */
     function remove() {
-      vm.editable.$delete().then(success).catch(error);
+      vm.user.$delete().then(success).catch(error);
       /**
       * @name success
       * @desc success
       */
       function success() {
-        $location.url('/?tab=editable');
+        $location.url('/?tab=users');
       }
       /**
       * @name error

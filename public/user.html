@@ -1,0 +1,36 @@
+<div class="container" style="height: 100%;" layout="column">
+  <md-toolbar class="md-whiteframe-z1">
+    <div class="md-toolbar-tools">
+      <md-button class="md-icon-button" ng-click="vm.back()">
+        <md-icon md-font-set="material-icons">navigate_before</md-icon>
+      </md-button>
+      <h2>Narrow CMS Admin</h2>
+      <span flex></span>
+      <md-button ng-click="vm.logout()">logout</md-button>
+    </div>
+  </md-toolbar>
+  <div class="md-padding" flex>
+    <md-fab-toolbar class="md-right fab-toolbar-bottom-right">
+      <md-fab-trigger>
+        <md-button aria-label="menu" class="md-fab">
+          <md-icon md-font-set="material-icons">menu</md-icon>
+        </md-button>
+      </md-fab-trigger>
+      <md-toolbar>
+        <md-fab-actions class="md-toolbar-tools">
+          <md-button ng-click="vm.save()" ng-disabled="!user.$valid">save</md-button>
+          <md-button ng-click="vm.remove()">delete</md-button>
+        </md-fab-actions>
+      </md-toolbar>
+    </md-fab-toolbar>
+    <form name="user" novalidate>
+      <md-input-container>
+        <label>username</label>
+          <input ng-model="vm.user.username" disabled />
+      </md-input-container>
+      <md-input-container>
+        <label>password</label>
+          <input ng-model="vm.user.password" required />
+      </md-input-container>
+    </form>
+</div>

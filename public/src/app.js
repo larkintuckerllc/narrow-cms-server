@@ -47,6 +47,19 @@
       templateUrl: 'editable-create.html',
       controller: 'EditableCreateController',
       controllerAs: 'vm'
+    })
+    .when('/user/:_id', {
+      templateUrl: 'user.html',
+      controller: 'UserController',
+      controllerAs: 'vm',
+      resolve: {
+        resolve: userResolve
+      }
+    })
+    .when('/user', {
+      templateUrl: 'user-create.html',
+      controller: 'UserCreateController',
+      controllerAs: 'vm'
     });
     /**
     * @name homeResolve
@@ -54,11 +67,13 @@
     * @param {Object} $q $q
     * @param {Object} ncAuthService
     */
-    homeResolve.$inject = ['$q', 'ncAuthService', 'ncEditableService'];
-    function homeResolve($q, ncAuthService, ncEditableService) {
+    homeResolve.$inject = ['$q', 'ncAuthService',
+      'ncEditableService', 'userService'];
+    function homeResolve($q, ncAuthService, ncEditableService, userService) {
       return $q.all([
         ncAuthService.authAsync(),
-        ncEditableService.query({}).$promise
+        ncEditableService.query({}).$promise,
+        userService.query({}).$promise
       ]);
     }
     /**
@@ -73,6 +88,20 @@
       return $q.all([
         ncAuthService.authAsync(),
         ncEditableService.get({_id: $route.current.params._id}).$promise
+      ]);
+    }
+    /**
+    * @name userResolve
+    * @desc get user
+    * @param {Object} $q $q
+    * @param {Object} ncAuthService
+    */
+    userResolve.$inject = ['$q', '$route', 'ncAuthService',
+      'userService'];
+    function userResolve($q, $route, ncAuthService, userService) {
+      return $q.all([
+        ncAuthService.authAsync(),
+        userService.get({_id: $route.current.params._id}).$promise
       ]);
     }
   }

@@ -9,13 +9,20 @@
   * @param {Object} $location $location
   * @param {Object} ncAuthService ncAuthService
   */
-  Controller.$inject = ['$location', 'resolve', 'ncAuthService'];
-  function Controller($location, resolve, ncAuthService) {
+  Controller.$inject = ['$location', '$routeParams',
+    'resolve', 'ncAuthService'];
+  function Controller($location, $routeParams, resolve, ncAuthService) {
     var vm = this;
+    vm.tabSelected = 0;
+    if ($routeParams.tab === 'users') {
+      vm.tabSelected = 1;
+    }
     vm.logout = logout;
     vm.editables = resolve[1];
+    vm.users = resolve[2];
     vm.editEditable = editEditable;
-    vm.createEditable = createEditable;
+    vm.editUser = editUser;
+    vm.create = create;
     /**
     * @name logout
     * @desc logout
@@ -33,11 +40,23 @@
       $location.url('/editable/' + editable._id);
     }
     /**
-    * @name createEditable
-    * @desc create editable
+    * @name editUser
+    * @desc edit user
+    * @param {Object} editable
     */
-    function createEditable() {
-      $location.url('/editable');
+    function editUser(user) {
+      $location.url('/user/' + user._id);
+    }
+    /**
+    * @name create
+    * @desc create
+    */
+    function create() {
+      if (vm.tabSelected === 0) {
+        $location.url('/editable');
+      } else {
+        $location.url('/user');
+      }
     }
   }
 })();
