@@ -1,10 +1,12 @@
 'use strict';
+var pkg = require('narrow-cms-server');
 var Editable = require('./editables.model');
 var User = require('./users.model');
 exports = module.exports;
 exports.add = add;
 exports.findAll = findAll;
 exports.findById = findById;
+exports.cachedFindById = cachedFindById;
 exports.update = update;
 exports.remove = remove;
 /**
@@ -81,6 +83,43 @@ function findById(req, res) {
       return res.status(404).send('');
     }
     res.send(editable);
+  }
+}
+/**
+* @name cachedFindById
+* @desc find editable by id cached
+* @param {Object} req Express HTTP request
+* @param {Object} res Express HTTP response
+*/
+function cachedFindById(req, res) {
+  var _id = req.params._id;
+  Editable.findById(_id, callback);
+  /**
+  * @name callback
+  * @desc callback for findById
+  * @param {Object} err error
+  * @param {Object} editable editable
+  */
+  function callback(err, editable) {
+    if (err)  {
+      noCache();
+      return res.status(500).send(err);
+    }
+    if (!editable) {
+      noCache();
+      return res.status(404).send('');
+    }
+    res.setHeader('cache-control', 'no-transform, public, max-age=' + pkg.getContentCacheAge());
+    res.send(editable);
+    /**
+    * @name noCache
+    * @desc Set headers to not cache.
+    */
+    function noCache() {
+      res.setHeader('cache-control', 'private, max-age=0, no-cache, no-store, must-revalidate');
+      res.setHeader('expires', '0');
+      res.setHeader('pragma', 'no-cache');
+    }
   }
 }
 /**

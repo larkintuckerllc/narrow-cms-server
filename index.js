@@ -2,10 +2,15 @@
 var dbPrefix = 'narrow-cms';
 var adminPassword = 'CHANGEME';
 var encodeSecret = 'CHANGEME';
+var staticCacheAge = 86400;
+var contentCacheAge = 300;
 exports = module.exports = {
   setDbPrefix: setDbPrefix,
   setAdminPassword: setAdminPassword,
   setEncodeSecret: setEncodeSecret,
+  setStaticCacheAge: setStaticCacheAge,
+  setContentCacheAge: setContentCacheAge,
+  getContentCacheAge: getContentCacheAge,
   getRouter: getRouter
 };
 /**
@@ -34,6 +39,42 @@ function setEncodeSecret(secret) {
   encodeSecret = secret;
 }
 /**
+* @name setStaticCacheAge
+* @desc set cache age for static assets.
+* @param {Integer} age
+*/
+function setStaticCacheAge(age) {
+  if (age === undefined ||
+    typeof age !== 'number' ||
+    age % 1 !== 0 ||
+    age < 0) {
+    throw 400;
+  }
+  staticCacheAge = age;
+}
+/**
+* @name setContentCacheAge
+* @desc set cache age for content items.
+* @param {Integer} age
+*/
+function setContentCacheAge(age) {
+  if (age === undefined ||
+    typeof age !== 'number' ||
+    age % 1 !== 0 ||
+    age < 0) {
+    throw 400;
+  }
+  contentCacheAge = age;
+}
+/**
+* @name getContentCacheAge
+* @desc get cache age for content items.
+* @returns {Integer} age
+*/
+function getContentCacheAge() {
+  return contentCacheAge;
+}
+/**
 * @name getRouter
 * @desc get router
 */
@@ -45,7 +86,7 @@ function getRouter() {
   var BearerStrategy = require('passport-http-bearer').Strategy;
   var jwt = require('jwt-simple');
   var User = require('./users.model');
-  router.use(express.static(__dirname + '/public'));
+  router.use(express.static(__dirname + '/public', {maxAge: staticCacheAge * 1000}));
   router.use(require('body-parser').json());
   router.use(require('body-parser').urlencoded({extended: true}));
   passport.use(new LocalStrategy(localStrategyVerify));
@@ -54,37 +95,50 @@ function getRouter() {
   var editablesController = require('./editables.controller');
   var usersController = require('./users.controller');
   // EDITABLES
-  router.get('/editables/:_id', editablesController.findById);
+  router.get('/editables/:_id', 
+    noCache,
+    editablesController.findById);
+  router.get('/cached/editables/:_id', editablesController.cachedFindById);
   router.get('/editables/',
+    noCache,
     passport.authenticate('bearer', {session: false}),
     editablesController.findAll);
   router.post('/editables/',
+    noCache,
     passport.authenticate('bearer', {session: false}),
     editablesController.add);
   router.put('/editables/:_id',
+    noCache,
     passport.authenticate('bearer', {session: false}),
     editablesController.update);
   router.delete('/editables/:_id',
+    noCache,
     passport.authenticate('bearer', {session: false}),
     editablesController.remove);
   // USERS
   router.get('/users/:_id',
+    noCache,
     passport.authenticate('bearer', {session: false}),
     usersController.findById);
   router.get('/users/',
+    noCache,
     passport.authenticate('bearer', {session: false}),
     usersController.findAll);
   router.post('/users/',
+    noCache,
     passport.authenticate('bearer', {session: false}),
     usersController.add);
   router.put('/users/:_id',
+    noCache,
     passport.authenticate('bearer', {session: false}),
     usersController.update);
   router.delete('/users/:_id',
+    noCache,
     passport.authenticate('bearer', {session: false}),
     usersController.remove);
   // LOGIN
   router.post('/login/',
+    noCache,
     passport.authenticate('local', {session: false}),
     sendToken);
   return router;
@@ -152,4 +206,17 @@ function getRouter() {
       'token': req.user
     });
   }
+}
+/**
+* @name noCache
+* @desc Express middleware to disable caching
+* @param {Object} req Express HTTP request.
+* @param {Object} res Express HTTP response.
+* @param {Object} next Next middleware.
+*/
+function noCache(req, res, next) {
+  res.setHeader('cache-control', 'private, max-age=0, no-cache, no-store, must-revalidate');
+  res.setHeader('expires', '0');
+  res.setHeader('pragma', 'no-cache');
+  next();
 }
