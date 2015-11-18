@@ -1,6 +1,6 @@
 {
   "name": "narrow-cms-server",
-  "version": "0.0.5",
+  "version": "0.1.0",
   "description": "The server (Express) component for NarrowCMS. NarrowCMS is a light-weight content management system for MEAN stack developers.",
   "author": "John Tucker <john@larkintuckerllc.com>",
   "scripts": {
