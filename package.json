@@ -1,6 +1,6 @@
 {
   "name": "narrow-cms-server",
-  "version": "0.0.5",
+  "version": "0.1.0",
   "description": "The server (Express) component for NarrowCMS. NarrowCMS is a light-weight content management system for MEAN stack developers.",
   "author": "John Tucker <john@larkintuckerllc.com>",
   "scripts": {
@@ -13,7 +13,15 @@
     "url": "https://github.com/larkintuckerllc/narrow-cms-server.git"
   },
   "keywords": [
-    "CMS", "content", "management", "system", "MEAN", "MongoDB", "Express", "AngulerJS", "Node.js"
+    "CMS",
+    "content",
+    "management",
+    "system",
+    "MEAN",
+    "MongoDB",
+    "Express",
+    "AngulerJS",
+    "Node.js"
   ],
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
