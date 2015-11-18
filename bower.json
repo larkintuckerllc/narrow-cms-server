@@ -6,7 +6,7 @@
     "angular-animate": "~1.4.0",
     "angular-aria": "~1.4.0",
     "angular-material": "~0.10.0",
-    "narrow-cms-client": "~0.0.3"
+    "narrow-cms-client": "~0.1.1"
   },
   "private": true
 }
